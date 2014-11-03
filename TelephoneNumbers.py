@@ -51,6 +51,9 @@ class TreeNode:
             child = TreeNode(v, node)
             node.add_child(child)
             node = child
+
+    def __str__(self):
+        return str(self.get_val())
         
 
 if __name__ == "__main__":
@@ -61,8 +64,8 @@ if __name__ == "__main__":
         "0412199803",
         "0468892011",
         "112",
-        "156",
-        "0468309302",
+        "15",
+        # "0468309302",
     ]
     # for i in xrange(N):
     for i, num in enumerate(telnums):
@@ -76,24 +79,20 @@ if __name__ == "__main__":
         )
         if tree:
             node = tree[0].get_root()
+            children = node.get_children()
             for i, n in enumerate(telephone):
-                if node.get_val() == n:
-                    find_flg = False
-                    children = node.get_children()
-                    child_list = filter(lambda c: c.get_val() != n, children )
-                    if not child_list:
-                        rest_tel_num = telephone[i+1:]
-                        node.add_tree(rest_tel_num)
-                        print >> sys.stderr, rest_tel_num
-                        break
-                    else:
-                        node = child_list[0]
-                        continue
-                else:
+                print >> sys.stderr, "children: " + str("".join([ child.get_val() for child in children]))
+
+                child_list = filter(lambda c: c.get_val() != n, children )
+                if not child_list:
                     rest_tel_num = telephone[i:]
-                    node._parent.add_tree(rest_tel_num)
+                    node.add_tree(rest_tel_num)
                     print >> sys.stderr, rest_tel_num
-                    break;
+                    break
+                else:
+                    node = child_list[0]
+                    children = node.get_children()
+                    continue
         else:
             new_tree = TelNumberTree(telephone)
             # print >> sys.stderr, "telephone :" + str(telephone[0])
